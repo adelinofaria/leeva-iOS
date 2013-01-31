@@ -1,0 +1,29 @@
+[TODO] Click details falta filtrar por links clicados **DELAYED** Due API doesn't return these details.
+[TODO] Retina tab images, detail arrow
+
+COMMIT 29, July
+
+[ADDED] ListSubscribersViewController, detail view for subscriber lists, where it will show all subscribers from that list.
+[ADDED] LoginRemindViewController splited from LoginViewController.
+[ADDED] SubscribersViewController, tab view for search and add a subscriber
+[ADDED] SubscribersAddViewController, ViewController to be presented as modal to add a subscriber.
+[CHANGED] Splited login views, with the ipad version implemented and tested.
+[CHANGED] Campaign detail views, changed to default labels so there will be automatic resize when email too wide.
+[CHANGED] Implement client restrictions on CampaignDetailsViewController and in ListDetailsViewController.
+[CHANGED] See subscribers in list tab.
+[CHANGED] Checkup de todo list tab.
+[CHANGED] LeevaResult changed fromCommand parameter to fromDictionary, that includes command and all other parameters of the request.
+[CHANGED] CampaignClicksViewController added clicks button, but remains hidden.
+[CHANGED] LeevaFacade has the responsibility to login now.
+[CHANGED] Subscriber implemented searchSubscribers and getSubscribers from list.
+
+COMMIT - 22, July
+
+[CHANGED] Table on details views changed to be plain
+[CHANGED] Added Campaign class getForwardsPercentage and getBrowserViewsPercentage methods.
+[CHANGED] Removed unnoticeable dropshadow on detail index bar on all views with this element.
+[CHANGED] Added unique values on campaign details views, opens, clicks, forwards, view on browser and on campaign detail view.
+[CHANGED] No results notice changed with pattern image.
+[CHANGED] Background images fixed with less 20px due system bar on top.
+[CHANGED] iPad login was fixed
+[CHANGED] Settings bundle finished will all content inserted.

@@ -1,0 +1,127 @@
+//
+//  RootTabBarViewController_iPhone.m
+//  Leeva
+//
+//  Created by Adelino Faria on 4/7/11.
+//  Copyright 2011 Bluekora - Agência Web & Comunicação, Lda. All rights reserved.
+//
+
+#import "RootTabBarViewController_iPhone.h"
+#import "OverviewViewController_iPhone.h"
+#import "CampaignViewController_iPhone.h"
+#import "ListViewController_iPhone.h"
+#import "SubscriberViewController_iPhone.h"
+
+
+@implementation RootTabBarViewController_iPhone
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background.png"]];
+        
+        OverviewViewController_iPhone *overview = [[OverviewViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+        self.overviewViewController  = overview;
+        
+        CampaignViewController_iPhone *campaign = [[CampaignViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+        self.campaignViewController  = campaign;
+        
+        ListViewController_iPhone *list = [[ListViewController_iPhone alloc] initWithNibName:nil bundle:nil];
+        self.listViewController  = list;
+        
+        NSArray *viewControllers;
+        
+        if ([[LeevaFacade instance].person isMemberOfClass:[Admin class]] || [[LeevaFacade instance].person isMemberOfClass:[User class]]) {
+            SubscriberViewController_iPhone *subscriber = [[SubscriberViewController_iPhone alloc]initWithNibName:nil bundle:nil];
+            self.subscriberViewController = subscriber;
+            
+            viewControllers = [NSArray arrayWithObjects:self.overviewViewController, self.campaignViewController.campaignNavigationController, self.listViewController.listNavigationController, self.subscriberViewController, nil];
+            
+            [subscriber release];
+        } else {
+            viewControllers = [NSArray arrayWithObjects:self.overviewViewController, self.campaignViewController.campaignNavigationController, self.listViewController.listNavigationController, nil];
+        }
+        self.viewControllers = viewControllers;
+        
+        [overview release];
+        [campaign release];
+        [list release];
+        
+        [viewControllers release];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [super dealloc];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+
+/*
+// Implement loadView to create a view hierarchy programmatically, without using a nib.
+- (void)loadView
+{
+}
+*/
+
+/*
+// Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+}
+*/
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSMutableArray *viewControllers;
+    
+    if ([[LeevaFacade instance].person isMemberOfClass:[Admin class]] || [[LeevaFacade instance].person isMemberOfClass:[User class]]) {
+        if(!self.subscriberViewController) {
+            SubscriberViewController_iPhone *subscriber = [[SubscriberViewController_iPhone alloc]initWithNibName:nil bundle:nil];
+            self.subscriberViewController = subscriber;
+        }
+        
+        if (![self.viewControllers containsObject:self.subscriberViewController]) {
+            viewControllers = [NSMutableArray arrayWithArray:self.viewControllers];
+            [viewControllers addObject:self.subscriberViewController];
+            [self setViewControllers:viewControllers animated:YES];
+        }
+    } else {
+        if ([self.viewControllers containsObject:self.subscriberViewController]) {
+            viewControllers = [NSMutableArray arrayWithArray:self.viewControllers];
+            [viewControllers removeObject:self.subscriberViewController];
+            [self setViewControllers:viewControllers animated:YES];
+        }
+    }
+    
+    for (UIViewController *view in self.viewControllers) {
+        [view viewDidAppear:animated];
+    }
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return YES;
+}
+
+@end
